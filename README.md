@@ -22,3 +22,9 @@
 `$ make dev`  
 2. Run the production images  
 `$ make prod`
+### Pull the Image from DockerHub Image Registry
+1. Login to DockerHub
+`$ docker login --username=boxdave`  
+`$ [ENTER YOUR PASSWORD]`  
+2. Pull the image  
+`$ docker pull boxdave/mcas-dlp-policy-box-classification-applier:latest`  

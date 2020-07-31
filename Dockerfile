@@ -8,10 +8,10 @@ RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
       ACCEPT_EULA=Y apt-get install msodbcsql17 unixodbc-dev -y && \
       groupadd docker && \
       useradd -m -g docker docker && \
-      touch /home/box_mcas/log/box-mcas.info.log && \
-      touch /home/box_mcas/log/box-mcas.error.log && \
+      touch /home/box_mcas/logs/box-mcas.info.log && \
+      touch /home/box_mcas/logs/box-mcas.error.log && \
       chown -R docker:docker /home/box_mcas && \
       python -m pip install --upgrade pip && \
       pip install -r requirements.txt 
 USER docker 
-CMD ["python", "src/main.py", "mcas-policy-box-classification-sync", "-e", "prod_docker"] 
+CMD ["python", "src/main.py", "mcas-policy-box-classification-sync", "-e", "prod"] 
