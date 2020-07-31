@@ -1,13 +1,13 @@
 version: "3"
 services:
-#  box-mcas:
-#    container_name: box-mcas-1
-#    build: .
-#    volumes:
-#      - ./data/configuration/:/home/box_mcas/data/configuration
-#      - ./data/logs:/home/box_mcas/data/logs
-#    networks:
-#      - box
+  box-mcas:
+    container_name: box-mcas-1
+    build: .
+    volumes:
+      - ./data/configuration/:/home/box_mcas/data/configuration
+      - ./data/logs:/home/box_mcas/data/logs
+    networks:
+      - box
   postgres:
     container_name: postgres-1
     image: postgres:12.3
