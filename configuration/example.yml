@@ -1,0 +1,68 @@
+box:
+  mcas_classifications:
+    - mcas_id: 5eeb7dc78568695ecf7c572a
+      box_name: CONFIDENTIAL
+  jwt:
+    boxAppSettings:
+      appAuth:
+        passphrase:
+        privateKey:
+        publicKeyID:
+      clientID:
+      clientSecret:
+    enterpriseID:
+log:
+  disable_existing_loggers: false
+  formatters:
+    verbose:
+      format: '[%(asctime)s] [%(levelname)s] %(filename)s %(lineno)d %(message)s'
+  handlers:
+    error_file_handler:
+      backupCount: 20
+      class: logging.handlers.RotatingFileHandler
+      encoding: utf8
+      filename: box-mcas.error.logs
+      formatter: verbose
+      level: ERROR
+      maxBytes: 10485760
+      mode: w
+    info_file_handler:
+      backupCount: 20
+      class: logging.handlers.RotatingFileHandler
+      encoding: utf8
+      filename: box-mcas.info.logs
+      formatter: verbose
+      level: INFO
+      maxBytes: 10485760
+      mode: w
+    stdout:
+      class: logging.StreamHandler
+      formatter: verbose
+      level: DEBUG
+      stream: ext://sys.stdout
+  loggers:
+    boxsdk:
+      handlers:
+        - error_file_handler
+      level: ERROR
+    urllib3.connectionpool:
+      handlers:
+        - error_file_handler
+      level: ERROR
+  root:
+    handlers:
+    - stdout
+    - error_file_handler
+    - info_file_handler
+    level: DEBUG
+  version: 1
+mcas:
+  subdomain:
+  api_token:
+sql:
+  host:
+  password:
+  username:
+  port:
+  database:
+  driver:

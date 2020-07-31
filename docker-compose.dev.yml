@@ -1,0 +1,33 @@
+version: "3"
+services:
+  box-mcas:
+    container_name: box-mcas-dev-1
+    build:
+      conext: .
+      dockerfile: Dockerfile.dev
+    networks:
+      - box-dev
+  postgres:
+    container_name: postgres-1
+    image: postgres:12.3
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: box_mcas
+    networks:
+      - box-dev
+  pgadmin:
+    container_name: pgadmin-1
+    image: fenglc/pgadmin4:latest
+    ports:
+      - "5050:5050"
+    environment:
+      DEFAULT_USER: admin@box.com
+      DEFAULT_PASSWORD: password
+    networks:
+      - box-dev
+networks:
+  box-dev:
+    driver: "bridge"

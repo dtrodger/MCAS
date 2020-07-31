@@ -1,0 +1,9 @@
+logs/*.log
+configuration/prod.yml
+configuration/box_dev.yml
+configuration/withum_dev.yml
+__pycache__
+.DS_Store
+.idea/
+.pytest_cache/
+env
