@@ -4,6 +4,7 @@ box_classification SQL table model and manager
 
 import logging
 from typing import List
+import time
 
 from sqlalchemy import Column, String, DateTime, Integer, Boolean, Text
 from sqlalchemy import func as sql_func
@@ -23,6 +24,7 @@ class BoxClassification(sql.model):
 
     ID = Column(Integer, primary_key=True, autoincrement=True)
     BOX_FILE_ID = Column(String)
+    BOX_FILE_NAME = Column(String)
     BOX_FILE_OWNER = Column(String)
     BOX_CLASSIFICATION_NAME = Column(String)
     MCAS_POLICY_ID = Column(String)
@@ -48,6 +50,7 @@ class BoxClassificationSQLManager(sql.SQLManager):
     def new_record(
             self,
             box_file_id,
+            box_file_name,
             box_file_owner,
             box_classification_name,
             mcas_policy_id,
@@ -57,6 +60,7 @@ class BoxClassificationSQLManager(sql.SQLManager):
         """
         record = self.model(
             BOX_FILE_ID=box_file_id,
+            BOX_FILE_NAME=box_file_name,
             BOX_FILE_OWNER=box_file_owner,
             BOX_CLASSIFICATION_NAME=box_classification_name,
             MCAS_POLICY_ID=mcas_policy_id,

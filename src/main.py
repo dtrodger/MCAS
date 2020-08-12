@@ -4,8 +4,11 @@ Application entry point
 
 import click
 
-from src.commands import mcas
-from src.commands import sql
+from src.commands import (
+    mcas,
+    sql,
+    process
+)
 
 
 @click.group()
@@ -24,7 +27,8 @@ def main() -> None:
         mcas.mcas_policy_box_classification_sync,
         sql.sql_create_database,
         sql.sql_create_table,
-        sql.sql_drop_table
+        sql.sql_drop_table,
+        process.kill_pythonw_process
     ]
     for command in commands:
         cli.add_command(command)

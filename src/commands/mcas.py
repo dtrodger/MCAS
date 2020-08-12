@@ -149,7 +149,7 @@ def mcas_policy_box_classification_sync(env, config):
             mcas_files_paginate = box_mcas_classification["paginate"]
             processed_all_at = box_mcas_classification["processed_all_at"]
             now = datetime.datetime.utcnow()
-            if (now - processed_all_at) > datetime.timedelta(minutes=1):
+            if (now - processed_all_at) > datetime.timedelta(seconds=1):
                 while True:
                     # Set a list to hold Box classification apply tasks to run in a thread pool
                     box_classification_tasks = list()
@@ -163,40 +163,48 @@ def mcas_policy_box_classification_sync(env, config):
                     # Load the MCAS file response data to a dictionary
                     file_response_content = json.loads(files_response.content)
                     file_policy_triggers = file_response_content.get("data", [])
-
                     # Iterate the MCAS file endpoint response policy triggers
                     for file_policy_trigger in file_policy_triggers:
                         try:
                             # Get the policy trigger's Box file information
                             box_file_id = file_policy_trigger["boxItem"]["id"]
+                            box_file_name = file_policy_trigger["boxItem"]["name"]
                             box_file_owner = file_policy_trigger["boxItem"]["owned_by"]["login"]
-                            log.info(f"processing DLP policy trigger with ID {file_policy_trigger['id']} Box file ID {box_file_id} Box file owner {box_file_owner}")
+                            log.info(f"processing DLP policy trigger with ID {file_policy_trigger['id']} Box file ID {box_file_id} Box file name {box_file_name}")
 
-                            # Insert a box_classification_apply SQL record
-                            box_classification_record = box_classification_sql_manager.new_record(
-                                box_file_id,
-                                box_file_owner,
-                                box_classification_name,
-                                mcas_policy_id
-                            )
-                            box_classification_records.append(box_classification_record)
-
-                            # Get a Box as user client associated to the MCAS policy trigger Box file owner
-                            box_as_user_clients, box_as_user_client = box.get_cached_box_as_user_client(
-                                box_as_user_clients, box_client, box_file_owner
-                            )
-                            if not box_as_user_client:
-                                box_classification_record.APPLY_ERROR_NO_BOX_USER = True
+                            if box_classification_sql_manager.exists(
+                                BOX_FILE_ID=box_file_id,
+                                BOX_CLASSIFICATION_NAME=box_classification_name,
+                                MCAS_POLICY_ID=mcas_policy_id
+                            ):
+                                log.info(f"skipping DLP policy trigger because record already exists")
                             else:
-                                # Add the Box classification apply task arguments to a list
-                                box_classification_tasks.append(
-                                    [
-                                        box_as_user_client,
-                                        box_file_id,
-                                        box_classification_name,
-                                        box_classification_record
-                                    ]
+                                # Insert a box_classification_apply SQL record
+                                box_classification_record = box_classification_sql_manager.new_record(
+                                    box_file_id,
+                                    box_file_name,
+                                    box_file_owner,
+                                    box_classification_name,
+                                    mcas_policy_id
                                 )
+                                box_classification_records.append(box_classification_record)
+
+                                # Get a Box as user client associated to the MCAS policy trigger Box file owner
+                                box_as_user_clients, box_as_user_client = box.get_cached_box_as_user_client(
+                                    box_as_user_clients, box_client, box_file_owner
+                                )
+                                if not box_as_user_client:
+                                    box_classification_record.APPLY_ERROR_NO_BOX_USER = True
+                                else:
+                                    # Add the Box classification apply task arguments to a list
+                                    box_classification_tasks.append(
+                                        [
+                                            box_as_user_client,
+                                            box_file_id,
+                                            box_classification_name,
+                                            box_classification_record
+                                        ]
+                                    )
                         except Exception as e:
                             log.error(f"failed to process DLP policy trigger with {e}")
 
@@ -210,7 +218,6 @@ def mcas_policy_box_classification_sync(env, config):
                     # Applied the configuration's MCAS classification item's pagination value
                     box_mcas_classification["paginate"] = mcas_files_paginate
                     config_utils.write_configuration(env, config)
-
                     if not poll_mcas_file_again:
                         box_mcas_classification["processed_all_at"] = datetime.datetime.utcnow()
                         config_utils.write_configuration(env, config)

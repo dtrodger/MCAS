@@ -18,7 +18,7 @@ def configure_logging(configuration: dict) -> None:
     """
     Writes log files and configures logging from a configuration dictionary
     """
-    log_dict_config = configuration["logs"]
+    log_dict_config = configuration["log"]
     for handler_alias, handler_config in log_dict_config["handlers"].items():
         if "filename" in handler_config.keys():
             log_file_path = os.path.join(
@@ -45,7 +45,6 @@ def load_configuration(env_alias: str) -> dict:
         os.path.join(
             os.path.dirname(__file__),
             "..",
-            "data",
             "configuration",
             f"{env_alias}.yml",
         ),
@@ -64,7 +63,6 @@ def write_configuration(env_alias: str, config_dict: dict) -> None:
         os.path.join(
             os.path.dirname(__file__),
             "..",
-            "data",
             "configuration",
             f"{env_alias}.yml",
         ),
