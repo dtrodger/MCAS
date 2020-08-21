@@ -1,7 +1,9 @@
 ## MCAS DLP Policy Box Classification Applier 
-### Architecture
+### Architecture Diagrams  
+![diagram](docs/Integration_Swim_Lane.png)  
 ![diagram](docs/MCAS_DLP_Policy_Box_Classification_Applier.png)  
-![diagram](docs/Box_MCAS.png) 
+### Solution Document  
+[Solution Document](https://cloud.box.com/s/gu4efpnrhdglv778oqp0htuw4vcg54zz)  
 ### Features   
 ### Runtime Requirements  
 [Python 3.6+](https://www.python.org/downloads/)  

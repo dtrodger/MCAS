@@ -4,7 +4,6 @@ box_classification SQL table model and manager
 
 import logging
 from typing import List
-import time
 
 from sqlalchemy import Column, String, DateTime, Integer, Boolean, Text
 from sqlalchemy import func as sql_func

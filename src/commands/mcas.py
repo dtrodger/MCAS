@@ -149,7 +149,7 @@ def mcas_policy_box_classification_sync(env, config):
             mcas_files_paginate = box_mcas_classification["paginate"]
             processed_all_at = box_mcas_classification["processed_all_at"]
             now = datetime.datetime.utcnow()
-            if (now - processed_all_at) > datetime.timedelta(seconds=1):
+            if (now - processed_all_at) > datetime.timedelta(minutes=1):
                 while True:
                     # Set a list to hold Box classification apply tasks to run in a thread pool
                     box_classification_tasks = list()

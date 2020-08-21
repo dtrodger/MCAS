@@ -25,9 +25,10 @@ def configure_connection(config: dict) -> None:
     global connection
     sql_config = config["sql"]
     if sql_config['driver'] == "mssql+pyodbc":
-        connection_string = f"{sql_config['driver']}://{sql_config['username']}:{sql_config['password']}@{sql_config['host']}:{sql_config['port']}/{sql_config['database']}?driver=ODBC+Driver+17+for+SQL+Server"
+        connection_string = f"{sql_config['driver']}://{sql_config['username']}:{sql_config['password']}@{sql_config['host']}:{sql_config['port']}/{sql_config['database']}?driver=ODBC+Driver+17+for+SQL+Server;Encrypt=yes;TrustServerCertificate=no;"
     else:
         connection_string = f"{sql_config['driver']}://{sql_config['username']}:{sql_config['password']}@{sql_config['host']}:{sql_config['port']}/{sql_config['database']}"
+    print(connection_string)
     connection = create_engine(connection_string)
     log.debug(f"connected to SQL database {sql_config['host']}")
 
