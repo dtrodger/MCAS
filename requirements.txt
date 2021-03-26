@@ -11,7 +11,7 @@ psycopg2-binary==2.8.5
 pycparser==2.20
 PyJWT==1.7.1
 pyodbc==4.0.30
-PyYAML==5.3.1
+PyYAML==5.4
 requests==2.24.0
 requests-toolbelt==0.9.1
 six==1.15.0
