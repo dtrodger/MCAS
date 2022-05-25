@@ -9,7 +9,7 @@ idna==2.10
 psutil==5.7.2
 psycopg2-binary==2.8.5
 pycparser==2.20
-PyJWT==1.7.1
+PyJWT==2.4.0
 pyodbc==4.0.30
 PyYAML==5.3.1
 requests==2.24.0
